@@ -1,68 +1,71 @@
+/** @format */
 "use client";
-import React from "react";
+
+import { useState } from "react";
 import { Nav } from "./ui/nav";
-import {
-  AlertCircle,
-  Archive,
-  ArchiveX,
-  File,
-  Inbox,
-  MessagesSquare,
-  Search,
-  Send,
-  ShoppingCart,
-  Trash2,
-  Users2,
-} from "lucide-react";
+
 type Props = {};
 
+import {
+  ShoppingCart,
+  LayoutDashboard,
+  UsersRound,
+  Settings,
+  ChevronRight,
+} from "lucide-react";
+import { Button } from "./ui/button";
+
+import { useWindowWidth } from "@react-hook/window-size";
+
 export default function SideNavbar({}: Props) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const onlyWidth = useWindowWidth();
+  const mobileWidth = onlyWidth < 768;
+
+  function toggleSidebar() {
+    setIsCollapsed(!isCollapsed);
+  }
+
   return (
-    <div>
+    <div className="relative min-w-[80px] border-r px-3  pb-10 pt-24 ">
+      {!mobileWidth && (
+        <div className="absolute right-[-20px] top-7">
+          <Button
+            onClick={toggleSidebar}
+            variant="secondary"
+            className=" rounded-full p-2"
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      )}
       <Nav
-        isCollapsed={false}
+        isCollapsed={mobileWidth ? true : isCollapsed}
         links={[
           {
-            title: "Inbox",
-            label: "128",
-            icon: Inbox,
+            title: "Dashboard",
+            href: "/",
+            icon: LayoutDashboard,
             variant: "default",
-            href: "/",
           },
           {
-            title: "Drafts",
-            label: "9",
-            icon: File,
+            title: "Users",
+            href: "/users",
+            icon: UsersRound,
             variant: "ghost",
-            href: "/",
           },
           {
-            title: "Sent",
-            label: "",
-            icon: Send,
+            title: "Ordrs",
+            href: "/orders",
+            icon: ShoppingCart,
             variant: "ghost",
-            href: "/",
           },
           {
-            title: "Junk",
-            label: "23",
-            icon: ArchiveX,
+            title: "Settings",
+            href: "/settings",
+            icon: Settings,
             variant: "ghost",
-            href: "/",
-          },
-          {
-            title: "Trash",
-            label: "",
-            icon: Trash2,
-            variant: "ghost",
-            href: "/",
-          },
-          {
-            title: "Archive",
-            label: "",
-            icon: Archive,
-            variant: "ghost",
-            href: "/archive",
           },
         ]}
       />
